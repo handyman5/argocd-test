@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: privatebin
+  namespace: argocd
+spec:
+  destination:
+    namespace: privatebin
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: privatebin
+    helm:
+      parameters:
+      - name: controller.emptyDir
+        value: "true"
+    repoURL: https://privatebin.github.io/helm-chart
+    targetRevision: 0.22.0
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
